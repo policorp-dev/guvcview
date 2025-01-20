@@ -1,0 +1,253 @@
+Index: guvcview/guvcview/gui.c
+===================================================================
+--- guvcview.orig/guvcview/gui.c
++++ guvcview/guvcview/gui.c
+@@ -648,16 +648,7 @@ void set_video_name(const char *name)
+  *
+  * returns: video file path
+  */
+-char *get_video_path()
+-{
+-	if(!video_path)
+-		video_path = strdup(getenv("HOME"));
+-
+-	return video_path;
+-}
+-
+-/*
+- * sets video path (to dir)
++/* sets video path (to dir)
+  * args:
+  *   path: video file path
+  *
+@@ -666,6 +657,57 @@ char *get_video_path()
+  *
+  * returns: none
+  */
++const char* get_video_directory_name(const char* lang) {
++
++    if (strstr(lang, "pt_") != NULL) {
++        return "Vídeos";
++    } else if (strstr(lang, "es_") != NULL) {
++        return "Vídeos";
++    } else if (strstr(lang, "fr_") != NULL) {
++        return "Vidéos";
++    } else if (strstr(lang, "de_") != NULL) {
++        return "Videos";
++    } else if (strstr(lang, "it_") != NULL) {
++        return "Video";
++    } else if (strstr(lang, "zh_") != NULL) {
++        return "视频";
++    } else if (strstr(lang, "ja_") != NULL) {
++        return "動画";
++    } else if (strstr(lang, "ko_") != NULL) {
++        return "비디오";
++    } else {
++        return "Videos";
++    }
++}
++
++char *get_video_path()
++{
++    static char video_path[256];
++    const char *home = getenv("HOME");
++    if (home == NULL) {
++        perror("Erro ao obter HOME");
++        return NULL;
++    }
++
++    const char *lang = getenv("LANG");
++    if (lang == NULL) {
++        lang = "C";
++    }
++
++    const char* directory_name = get_video_directory_name(lang);
++    snprintf(video_path, sizeof(video_path), "%s/%s", home, directory_name);
++
++    struct stat st = {0};
++    if (stat(video_path, &st) == -1) {
++        if (mkdir(video_path, 0700) != 0) {
++            perror("Erro ao criar diretório");
++            return NULL;
++        }
++    }
++
++    return video_path;
++}
++
+ void set_video_path(const char *path)
+ {
+ 	if(video_path != NULL)
+@@ -839,12 +881,54 @@ void set_photo_name(const char *name)
+  *
+  * returns: photo file path
+  */
++const char* get_image_directory_name(const char* lang) {
++    if (strstr(lang, "pt_") != NULL) {
++        return "Imagens";
++    } else if (strstr(lang, "es_") != NULL) {
++        return "Imágenes";
++    } else if (strstr(lang, "fr_") != NULL) {
++        return "Images";
++    } else if (strstr(lang, "de_") != NULL) {
++        return "Bilder";
++    } else if (strstr(lang, "it_") != NULL) {
++        return "Immagini";
++    } else if (strstr(lang, "zh_") != NULL) {
++        return "图片";
++    } else if (strstr(lang, "ja_") != NULL) {
++        return "画像";
++    } else if (strstr(lang, "ko_") != NULL) {
++        return "이미지"; 
++    } else {
++        return "Images";
++    }
++}
++
+ char *get_photo_path()
+ {
+-	if(!photo_path)
+-		photo_path = strdup(getenv("HOME"));
++    static char photo_path[256];
++    const char *home = getenv("HOME");
++    if (home == NULL) {
++        perror("Erro ao obter HOME");
++        return NULL;
++    }
++
++    const char *lang = getenv("LANG"); 
++    if (lang == NULL) {
++        lang = "C";
++    }
++
++    const char* directory_name = get_image_directory_name(lang);
++    snprintf(photo_path, sizeof(photo_path), "%s/%s", home, directory_name);
++
++    struct stat st = {0};
++    if (stat(photo_path, &st) == -1) {
++        if (mkdir(photo_path, 0700) != 0) {
++            perror("Erro ao criar diretório");
++            return NULL;
++        }
++    }
+ 
+-	return photo_path;
++    return photo_path;
+ }
+ 
+ /*
+Index: guvcview/gview_render/render_sdl2.c
+===================================================================
+--- guvcview.orig/gview_render/render_sdl2.c
++++ guvcview/gview_render/render_sdl2.c
+@@ -42,6 +42,7 @@
+ 
+ #include <stdlib.h>
+ #include <string.h>
++#include <sys/stat.h>
+ 
+ #define BUFFER_SIZE 128
+ 
+@@ -172,50 +173,56 @@ void onPhotoButtonClick() {
+     SDL_Delay(300);
+ }
+ 
++char *get_image_path() {
++    static char image_path[256];
++    const char *home = getenv("HOME");
++    if (home == NULL) {
++        perror("Erro ao obter HOME");
++        return NULL;
++    }
++
++    const char *lang = getenv("LANG"); // Obtém o idioma do sistema
++    if (lang == NULL) {
++        lang = "C"; 
++    }
++
++    if (strstr(lang, "pt_") != NULL) {
++        snprintf(image_path, sizeof(image_path), "%s/Imagens", home);
++    } else {
++        snprintf(image_path, sizeof(image_path), "%s", home);
++    }
++
++    struct stat st = {0};
++    if (stat(image_path, &st) == -1) {
++        if (mkdir(image_path, 0700) != 0) {
++            perror("Erro ao criar diretório");
++            return NULL;
++        }
++    }
++
++    return image_path; 
++}
++
+ void onGalleryButtonClick() {
+-     printf("Clicou no botão GALERIA!\n");
+-     const char *homeDir = getenv("HOME");
++     char *imagePath = get_image_path();
+ 
+-     if (homeDir == NULL){
+-         perror("Erro ao obter HOME");
+-         return;
+-     }
+-     char arquivoConfig[256];
+-     snprintf(arquivoConfig, sizeof(arquivoConfig), "%s/.config/guvcview2/video0", homeDir);
+-     FILE *arquivo = fopen(arquivoConfig, "r");
+-
+-     if (arquivo == NULL) {
+-            perror("Erro ao abrir o arquivo de configuração na primeira\n");
+-	    config_save(arquivoConfig);
+-    	    arquivo = fopen(arquivoConfig, "r");
+-            perror("Arquivo foi criado\n");
++     if(imagePath == NULL){
++        perror("Erro ao obter o caminho das imagens");
++	return;
+      }
+ 
+-     char linha[256];
+-
+-     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+-         if (sscanf(linha, "photo_path=%s", linha) == 1) {
+-             printf("Caminho da foto: %s\n", linha);
+-
+-             // Criar um novo processo
+-             pid_t pid = fork();
+-
+-             if (pid == -1) {
+-                 perror("Erro ao criar processo");
+-                 break;
+-            } else if (pid == 0) {  // Processo filho
+-                 // Executar o comando no processo filho
+-                 execlp("nautilus", "nautilus", linha, (char *)NULL);
+-
+-                 // Se o execlp falhar, imprime um erro
+-                 perror("Erro ao executar nautilus");
+-                 exit(EXIT_FAILURE);
+-                 waitpid(pid, NULL, 0);
+-                 break;  // Se você quiser apenas a primeira ocorrência, pode sair do loop
+-             }
+-         }
++     pid_t pid = fork();
++     if(pid == -1){
++         perror("Erro ao criar processo");
++	 return;
++     }else if(pid == 0){
++        execlp("nautilus","nautilus",imagePath, (char *) NULL);
++	perror("Erro ao executar o nautilus");
++	exit(EXIT_FAILURE);
+      }
+ 
++     
++
+      //// apenas a galeria é trocado
+      ImageInfo images[] = {
+ 	{ "/usr/share/pixmaps/guvcview/video.svg", 50, 50, valorX, valoryVideo },
+@@ -228,7 +235,6 @@ void onGalleryButtonClick() {
+     SDL_Delay(150);
+ 
+ 
+-     fclose(arquivo);
+  }
+ 
+ static int video_init(int width, int height, int flags, int win_w, int win_h)
