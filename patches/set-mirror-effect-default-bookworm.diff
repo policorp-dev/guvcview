@@ -1,0 +1,26 @@
+Index: guvcview/guvcview/config.c
+===================================================================
+--- guvcview.orig/guvcview/config.c
++++ guvcview/guvcview/config.c
+@@ -65,7 +65,7 @@ static config_t my_config =
+ 	.fps_num = 1,
+ 	.fps_denom = 25,
+ 	.audio_device = -1,/*guvcview will use API default in this case*/
+-	.video_fx = 0, /*no video fx*/
++	.video_fx = 1, /*no video fx*/
+ 	.audio_fx = 0, /*no audio fx*/
+ 	.osd_mask = 0, /*REND_OSD_NONE*/
+ 	.crosshair_color=0x0000FF00, /*osd crosshair rgb color (0x00RRGGBB)*/
+Index: guvcview/guvcview/video_capture.c
+===================================================================
+--- guvcview.orig/guvcview/video_capture.c
++++ guvcview/guvcview/video_capture.c
+@@ -66,7 +66,7 @@ static int restart = 0; /*restart flag*/
+ 
+ static char render_caption[30]; /*render window caption*/
+ 
+-static uint32_t my_render_mask = REND_FX_YUV_NOFILT; /*render fx filter mask*/
++static uint32_t my_render_mask =  REND_FX_YUV_MIRROR; /*render fx filter mask*/
+ 
+ static uint32_t my_audio_mask = AUDIO_FX_NONE; /*audio fx filter mask*/
+ 
