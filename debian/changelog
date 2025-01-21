@@ -1,53 +1,42 @@
-guvcview (2.0.8.Policorp-9) stable; urgency=medium
+guvcview (2.1.0-0.2) unstable; urgency=medium
 
-  * add postinst - se oem executa -g none
-  * add correção para o vaio vjfh52-rpl
+  * Non-maintainer upload.
+  * Release to unstable.
 
- -- Lucas Salles <lucas.salles@policorp.com.br>  Fri, 23 Aug 2024 10:37:13 -0300
+ -- Soren Stoutner <soren@debian.org>  Fri, 20 Sep 2024 07:16:28 -0700
 
-guvcview (2.0.8.Policorp-8) stable; urgency=medium
+guvcview (2.1.0-0.1) experimental; urgency=medium
 
-  * changed exec tag to open config
-  * add correção para o vaio vjfh52-rpl
+  * Non-maintainer upload.
+  * New upastream version, 2.1.0. (Closes: #1072421)
+  * Shared object bump to 2.2.
+  * 'd/copyright': Add myself, Phil Wyett to 'Files: debian/*' section.
+  * 'd/control':
+    - Remove 't64' transition.
+    - Update 'Standards-Version' to 4.7.0, no changes required.
+    - Use HTTPS for 'Homepage'.
+    - Update 'Breaks' and 'Replaces'.
+  * 'd/rules':
+    - Add DH_VERBOSE but leave disabled.
+    - Add hardening 'all' to build.
+  * Add 'd/watch' file.
+  * Remove 'd/patches' and contents.
+  * Remove legacy 'd/README.Debian'.
 
- -- Edson Juliano Drosdeck <edson@policorp.com.br>  Wed, 21 Aug 2024 18:44:56 +0000
+ -- Phil Wyett <philip.wyett@kathenas.org>  Thu, 12 Sep 2024 10:45:32 +0100
 
-guvcview (2.0.8.Policorp-7) stable; urgency=medium
+guvcview (2.0.8-2.1) unstable; urgency=medium
 
-  * Corrigido patch
+  * Non-maintainer upload.
+  * Rename libraries for 64-bit time_t transition.  Closes: #1062197
 
- -- Luiz Oliveira <luiz.oliveira@policorp.com.br>  Mon, 12 Aug 2024 10:18:51 -0300
+ -- Lukas Märdian <slyon@debian.org>  Wed, 28 Feb 2024 09:22:42 +0000
 
-guvcview (2.0.8.Policorp-6) stable; urgency=medium
+guvcview (2.0.8-2) unstable; urgency=medium
 
-  * Adicionado mensagem para quando não há camera conectada
+  * d/control: Add Breaks and Replaces to libguvcview-2.1-2 (Closes: #1014841)
 
- -- Luiz Oliveira <luiz.oliveira@policorp.com.br>  Fri, 09 Aug 2024 16:57:46 -0300
-
-guvcview (2.0.8.Policorp-5) stable; urgency=medium
-
-  
-  * Alterado path de imagem e video
-
- -- Luiz Oliveira <luiz.oliveira@policorp.com.br>  Mon, 22 Jul 2024 17:22:59 -0300
-
-guvcview (2.0.8.Policorp-3) stable; urgency=medium
-
-  * Add correcao para o modelo N14AP74G
-
- -- Lucas Salles <lucas.salles@policorp.com.br>  Wed, 17 Jul 2024 13:30:30 -0400
-
-guvcview (2.0.8.Policorp-2) stable; urgency=medium
-
-  * Add interface grafica versao Policorp
-
- -- Lucas Salles <lucas.salles@policorp.com.br>  Tue, 09 Jan 2024 13:58:02 -0300
-
-guvcview (2.0.8.Policorp-1) stable; urgency=medium
-
-  * Add versao Policorp para Bookworm
-
- -- Lucas Salles <lucas.salles@policorp.com.br>  Mon, 11 Dec 2023 11:08:51 -0400
+ -- Nobuhiro Iwamatsu <iwamatsu@debian.org>  Fri, 22 Jul 2022 15:50:15 +0900
 
 guvcview (2.0.8-1) unstable; urgency=medium
 

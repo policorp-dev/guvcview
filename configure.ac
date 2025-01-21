@@ -9,13 +9,13 @@ dnl --------------------------------
 dnl Initialization macros (sets PACKAGE and VERSION)
 dnl --------------------------------
 m4_define([guvcview_major], [2])
-m4_define([guvcview_minor], [0])
-m4_define([guvcview_micro], [8])
+m4_define([guvcview_minor], [1])
+m4_define([guvcview_micro], [0])
 
 m4_define([guvcview_version],
           [guvcview_major.guvcview_minor.guvcview_micro])
 
-AC_INIT([guvcview], [guvcview_version], [http://guvcview.sourceforge.net/])
+AC_INIT([guvcview],[guvcview_version],[http://guvcview.sourceforge.net/])
 
 PACKAGE_RELEASE=2
 AC_SUBST(PACKAGE_RELEASE)
@@ -49,8 +49,16 @@ AC_PROG_CC([clang gcc cc])
 AM_PROG_CC_C_O
 AC_PROG_CXX([clang++ g++ cc++ cxx])
 AC_PROG_CXX_C_O
-AC_HEADER_STDC
-AC_PROG_LIBTOOL
+m4_warn([obsolete],
+[The preprocessor macro `STDC_HEADERS' is obsolete.
+  Except in unusual embedded environments, you can safely include all
+  ISO C90 headers unconditionally.])dnl
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
+LT_INIT
 # enable Large File Support extension (LFS)
 AC_SYS_LARGEFILE
 
@@ -90,8 +98,16 @@ AM_GLIB_GNU_GETTEXT([external])
 dnl -----------------------------------------------
 dnl  check for some required headers
 dnl -----------------------------------------------
-AC_STDC_HEADERS
-AC_HAVE_HEADERS(math.h)
+m4_warn([obsolete],
+[The preprocessor macro `STDC_HEADERS' is obsolete.
+  Except in unusual embedded environments, you can safely include all
+  ISO C90 headers unconditionally.])dnl
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
+AC_CHECK_HEADERS([math.h])
 AC_CHECK_LIB([m],[exp],[AC_DEFINE([HAVE_EXP],[1],[libm includes exp])])
 AC_CHECK_LIB([m],[roundf],[AC_DEFINE([HAVE_ROUNDF],[1],[libm includes roundf])])
 AC_CHECK_LIB([m],[pow],[AC_DEFINE([HAVE_POW],[1],[libm includes pow])])
@@ -107,7 +123,7 @@ AC_SUBST(GVIEWV4L2CORE_LD_NAME)
 
 #release versioning
 GVIEWV4L2CORE_CURRENT_VERSION=2
-GVIEWV4L2CORE_REVISION_VERSION=1
+GVIEWV4L2CORE_REVISION_VERSION=2
 GVIEWV4L2CORE_AGE_VERSION=0
 
 #API version (SONAME)
@@ -181,7 +197,7 @@ AC_SUBST(GVIEWRENDER_LD_NAME)
 
 #release versioning
 GVIEWRENDER_CURRENT_VERSION=2
-GVIEWRENDER_REVISION_VERSION=1
+GVIEWRENDER_REVISION_VERSION=2
 GVIEWRENDER_AGE_VERSION=0
 
 #API version (SONAME)
@@ -287,7 +303,7 @@ AC_SUBST(GVIEWAUDIO_LD_NAME)
 
 #release versioning
 GVIEWAUDIO_CURRENT_VERSION=2
-GVIEWAUDIO_REVISION_VERSION=0
+GVIEWAUDIO_REVISION_VERSION=2
 GVIEWAUDIO_AGE_VERSION=0
 
 #API version (SONAME)
@@ -352,7 +368,7 @@ AC_SUBST(GVIEWENCODER_LD_NAME)
 
 #release versioning
 GVIEWENCODER_CURRENT_VERSION=2
-GVIEWENCODER_REVISION_VERSION=1
+GVIEWENCODER_REVISION_VERSION=2
 GVIEWENCODER_AGE_VERSION=0
 
 #API version (SONAME)

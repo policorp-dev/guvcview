@@ -1,9 +1,0 @@
-update-manpage
-set-mirror-effect-default-bookworm.diff
-0001-interface-grafica-versao-policorp.diff
-0002-add-icones-interface-policorp.diff
-0003-add-config-guvcview-desktop.diff
-0004-removido-texto-fps.diff
-0005-configurar-patch-video-foto.diff
-0006-add-message-when-no-webcam.diff
-0007-add-exit-se-tiver-tecla-webcam.diff

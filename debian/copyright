@@ -126,6 +126,7 @@ License: FSFAP
 
 Files: debian/*
 Copyright: Copyright (C) 2008-2022 Nobuhiro Iwamatsu <iwamatsu@debian.org>
+           Copyright (C) 2024 Phil Wyett <philip.wyett@kathenas.org>
 License: GPL-2+
 
 License: GPL-2+

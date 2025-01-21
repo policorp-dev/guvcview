@@ -1,7 +1,7 @@
 Source: guvcview
 Section: graphics
 Priority: optional
-Maintainer: Edson Juliano Drosdeck <edson@policorp.com>
+Maintainer: Nobuhiro Iwamatsu <iwamatsu@debian.org>
 Build-Depends: debhelper-compat (= 13),
                intltool,
                libsdl2-dev,
@@ -13,14 +13,11 @@ Build-Depends: debhelper-compat (= 13),
                libv4l-dev,
                libudev-dev,
                libusb-1.0-0-dev,
-               libgsl-dev,
-               libsdl2-dev,
-               libsdl2-ttf-dev, 
-               libsdl2-image-dev
-Standards-Version: 4.6.0
-Homepage: http://guvcview.sourceforge.net/
-#Vcs-Git: https://salsa.debian.org/debian/guvcview.git
-#Vcs-Browser: https://salsa.debian.org/debian/guvcview
+               libgsl-dev
+Standards-Version: 4.7.0
+Homepage: https://guvcview.sourceforge.net/
+Vcs-Git: https://salsa.debian.org/debian/guvcview.git
+Vcs-Browser: https://salsa.debian.org/debian/guvcview
 Rules-Requires-Root: no
 
 Package: guvcview
@@ -31,12 +28,15 @@ Description: GTK+ base UVC Viewer
  guvcview is a simple GTK+ interface for capturing and viewing video from
  devices supported by the Linux UVC driver.
 
-Package: libguvcview-2.1-2
+Package: libguvcview-2.2
 Section: libs
 Architecture: linux-any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Multi-Arch: same
+Breaks: libguvcview-2.1-2t64 (<< ${source:Version}),
+        libguvcview-2.1-2 (<< ${source:Version}), libguvcview-2.0-2
+Replaces: libguvcview-2.1-2t64, libguvcview-2.1-2, libguvcview-2.0-2
 Description: GTK+ base UVC Viewer - runtime
  guvcview is a simple GTK+ interface for capturing and viewing video from
  devices supported by the Linux UVC driver.
@@ -48,7 +48,7 @@ Section: libdevel
 Architecture: linux-any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, libguvcview-2.1-2 (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libguvcview-2.2 (= ${binary:Version})
 Recommends: uvcdynctrl
 Description: GTK+ base UVC Viewer - development files
  guvcview is a simple GTK+ interface for capturing and viewing video from

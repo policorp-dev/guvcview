@@ -142,7 +142,7 @@ int enum_v4l2_devices()
 
     int num_dev = 0;
     struct v4l2_capability v4l2_cap;
-
+    
     my_device_list.list_devices = calloc(1, sizeof(v4l2_dev_sys_data_t));
     if(my_device_list.list_devices == NULL)
 	{
@@ -196,6 +196,19 @@ int enum_v4l2_devices()
             continue; /*next dir entry*/
         }
         v4l2_close(fd);
+
+        uint32_t caps;
+        if(v4l2_cap.capabilities & V4L2_CAP_DEVICE_CAPS) 
+        {
+            caps = v4l2_cap.device_caps;
+        } else {
+            caps = v4l2_cap.capabilities;
+        }
+        
+        if(!(caps & V4L2_CAP_VIDEO_CAPTURE)) 
+        {
+            continue;
+        }
 
         num_dev++;
         /* Update the device list*/
@@ -387,7 +400,7 @@ int check_device_list_events(v4l2_dev_t *vd)
 	
 				if(my_device_list.list_devices)
 					my_device_list.list_devices[vd->this_device].current = 1;
-			}
+	   }
 			
             udev_device_unref(dev);
 
