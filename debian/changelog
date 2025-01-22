@@ -1,3 +1,9 @@
+guvcview (2.1.0.Policorp-1) stable; urgency=medium
+
+  * Add versão Policorp
+
+ -- Soren Stoutner <soren@debian.org>  Wed, 22 Jan 2025 14:41:46 -0300
+
 guvcview (2.1.0-0.2) unstable; urgency=medium
 
   * Non-maintainer upload.
