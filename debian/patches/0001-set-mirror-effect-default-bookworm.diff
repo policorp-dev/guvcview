@@ -20,7 +20,7 @@ Index: guvcview/guvcview/video_capture.c
  static char render_caption[30]; /*render window caption*/
  
 -static uint32_t my_render_mask = REND_FX_YUV_NOFILT; /*render fx filter mask*/
-+static uint32_t my_render_mask =  REND_FX_YUV_MIRROR; /*render fx filter mask*/
++static uint32_t my_render_mask = REND_FX_YUV_MIRROR; /*render fx filter mask*/
  
  static uint32_t my_audio_mask = AUDIO_FX_NONE; /*audio fx filter mask*/
  
