@@ -1,0 +1,25 @@
+Index: guvcview/data/icons/Makefile.am
+===================================================================
+--- guvcview.orig/data/icons/Makefile.am
++++ guvcview/data/icons/Makefile.am
+@@ -1,6 +1,6 @@
+ iconsdir = ${datadir}/pixmaps/guvcview
+ icons_DATA = \
+-		guvcview.png
++		guvcview.png camera.svg galeria.svg video.svg camera-clique.svg video-clique.svg galeria-clique.svg
+ 
+ 
+ gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/pixmaps/guvcview/
+Index: guvcview/data/icons/Makefile.in
+===================================================================
+--- guvcview.orig/data/icons/Makefile.in
++++ guvcview/data/icons/Makefile.in
+@@ -356,7 +356,7 @@ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ iconsdir = ${datadir}/pixmaps/guvcview
+ icons_DATA = \
+-		guvcview.png
++		guvcview.png camera.svg galeria.svg video.svg camera-clique.svg video-clique.svg galeria-clique.svg
+ 
+ gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/pixmaps/guvcview/
+ EXTRA_DIST = $(icons_DATA)

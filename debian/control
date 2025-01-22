@@ -13,7 +13,10 @@ Build-Depends: debhelper-compat (= 13),
                libv4l-dev,
                libudev-dev,
                libusb-1.0-0-dev,
-               libgsl-dev
+               libgsl-dev,
+	       libsdl2-dev,
+	       libsdl2-ttf-dev,
+               libsdl2-image-dev
 Standards-Version: 4.7.0
 Homepage: https://guvcview.sourceforge.net/
 Vcs-Git: https://salsa.debian.org/debian/guvcview.git
