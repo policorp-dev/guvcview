@@ -2,7 +2,7 @@ Index: guvcview/guvcview/video_capture.c
 ===================================================================
 --- guvcview.orig/guvcview/video_capture.c
 +++ guvcview/guvcview/video_capture.c
-@@ -1280,7 +1280,7 @@ void *capture_loop(void *data)
+@@ -1286,7 +1286,7 @@ void *capture_loop(void *data)
  			render_frame_osd(frame->yuv_frame);
  
  			/* finally render the frame */

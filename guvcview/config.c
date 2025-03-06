@@ -69,6 +69,8 @@ static config_t my_config =
 	.audio_fx = 0, /*no audio fx*/
 	.osd_mask = 0, /*REND_OSD_NONE*/
 	.crosshair_color=0x0000FF00, /*osd crosshair rgb color (0x00RRGGBB)*/
+	.crosshair_size=24,
+	.fx_bin_treshold = 0x7F, /*fx binary filter treshold - 50% */
 };
 
 /*
@@ -155,11 +157,14 @@ int config_save(const char *filename)
 	fprintf(fp, "audio_device=%i\n", my_config.audio_device);
 	fprintf(fp, "#video fx mask \n");
 	fprintf(fp, "video_fx=0x%x\n", my_config.video_fx);
+	fprintf(fp, "#fx binary filter treshold (0x0 to 0xff): default=0x7f (50%%)\n");
+	fprintf(fp, "fx_bin_treshold=0x%x\n", my_config.fx_bin_treshold);
 	fprintf(fp, "#audio fx mask \n");
 	fprintf(fp, "audio_fx=0x%x\n", my_config.audio_fx);
 	fprintf(fp, "#OSD mask \n");
 	fprintf(fp, "osd_mask=0x%x\n", my_config.osd_mask);
 	fprintf(fp, "crosshair_color=0x%x\n", my_config.crosshair_color);
+	fprintf(fp, "crosshair_size=%i\n", my_config.crosshair_size);
 
 	/* return to system locale */
     setlocale(LC_NUMERIC, "");
@@ -325,12 +330,16 @@ int config_load(const char *filename)
 			my_config.audio_device = (int) strtoul(value, NULL, 10);
 		else if(strcmp(token, "video_fx") == 0)
 			my_config.video_fx = (uint32_t) strtoul(value, NULL, 16);
+		else if(strcmp(token, "fx_bin_treshold") == 0)
+			my_config.fx_bin_treshold = (uint8_t) strtoul(value, NULL, 16);
 		else if(strcmp(token, "audio_fx") == 0)
 			my_config.audio_fx = (uint32_t) strtoul(value, NULL, 16);
 		else if(strcmp(token, "osd_mask") == 0)
 			my_config.osd_mask = (uint32_t) strtoul(value, NULL, 16);
 		else if(strcmp(token, "crosshair_color") == 0)
 			my_config.crosshair_color = (uint32_t) strtoul(value, NULL, 16);
+		else if(strcmp(token, "crosshair_size") == 0)
+			my_config.crosshair_size = (int) strtoul(value, NULL, 10);
 		else
 			fprintf(stderr, "GUVCVIEW: (config) skiping invalid entry at line %i ('%s', '%s')\n", line, token, value);
 

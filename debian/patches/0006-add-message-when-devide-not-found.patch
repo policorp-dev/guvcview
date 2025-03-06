@@ -2,16 +2,15 @@ Index: guvcview/guvcview/guvcview.c
 ===================================================================
 --- guvcview.orig/guvcview/guvcview.c
 +++ guvcview/guvcview/guvcview.c
-@@ -28,7 +28,7 @@
- #include <sys/stat.h>
- #include <sys/resource.h>
- #include <errno.h>
--
+@@ -41,6 +41,7 @@
+ #include "config.h"
+ #include "gui.h"
+ #include "core_io.h"
 +#include <gtk/gtk.h>
- #include "gview.h"
- #include "gviewv4l2core.h"
- #include "gviewrender.h"
-@@ -81,6 +81,7 @@ void signal_callback_handler(int signum)
+ 
+ int debug_level = 0;
+ 
+@@ -81,6 +82,7 @@ void signal_callback_handler(int signum)
  int main(int argc, char *argv[])
  {
  	/*check stack size*/
@@ -19,23 +18,21 @@ Index: guvcview/guvcview/guvcview.c
  	const rlim_t kStackSize = 128L * 1024L * 1024L;   /* min stack size = 128 Mb*/
      struct rlimit rl;
      int result;
-@@ -247,8 +248,19 @@ int main(int argc, char *argv[])
+@@ -247,8 +249,17 @@ int main(int argc, char *argv[])
  	if(!vd)
  	{
  		char message[55];
 -		snprintf(message, 54, "no video device (%s) found", my_options->device);
 -		gui_error("Guvcview error", message, 1);
-+		snprintf(message, 54, "Câmera não encontrada em: (%s) ", my_options->device);
-+		
++		snprintf(message,54,"Câmera não encontrada em: (%s) ", my_options->device);
 +		GtkWidget *dialog;
-+		dialog = gtk_message_dialog_new(NULL, 
-+										GTK_DIALOG_DESTROY_WITH_PARENT, 
-+										GTK_MESSAGE_ERROR, 
-+										GTK_BUTTONS_CLOSE, 
-+										"%s", message);
-+		gtk_window_set_title(GTK_WINDOW(dialog), "Guvcview Error");
-+		
-+		gtk_dialog_run(GTK_DIALOG(dialog));
++		dialog = gtk_message_dialog_new(NULL,
++						GTK_DIALOG_DESTROY_WITH_PARENT,
++						GTK_MESSAGE_ERROR,
++						GTK_BUTTONS_CLOSE,
++						"%s",message);
++
++		gtk_window_set_title(GTK_WINDOW(dialog), "Error");
 +		gtk_widget_destroy(dialog);
 +
  		options_clean();

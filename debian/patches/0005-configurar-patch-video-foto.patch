@@ -2,27 +2,18 @@ Index: guvcview/guvcview/gui.c
 ===================================================================
 --- guvcview.orig/guvcview/gui.c
 +++ guvcview/guvcview/gui.c
-@@ -648,16 +648,7 @@ void set_video_name(const char *name)
+@@ -49,6 +49,8 @@
+ #if HAS_QT5
+ #include "gui_qt5.h"
+ #endif
++#include <sys/stat.h>
++#include <unistd.h>
+ 
+ 
+ extern int debug_level;
+@@ -648,12 +650,56 @@ void set_video_name(const char *name)
   *
   * returns: video file path
-  */
--char *get_video_path()
--{
--	if(!video_path)
--		video_path = strdup(getenv("HOME"));
--
--	return video_path;
--}
--
--/*
-- * sets video path (to dir)
-+/* sets video path (to dir)
-  * args:
-  *   path: video file path
-  *
-@@ -666,6 +657,57 @@ char *get_video_path()
-  *
-  * returns: none
   */
 +const char* get_video_directory_name(const char* lang) {
 +
@@ -47,8 +38,10 @@ Index: guvcview/guvcview/gui.c
 +    }
 +}
 +
-+char *get_video_path()
-+{
+ char *get_video_path()
+ {
+-	if(!video_path)
+-		video_path = strdup(getenv("HOME"));
 +    static char video_path[256];
 +    const char *home = getenv("HOME");
 +    if (home == NULL) {
@@ -73,15 +66,16 @@ Index: guvcview/guvcview/gui.c
 +    }
 +
 +    return video_path;
-+}
-+
- void set_video_path(const char *path)
- {
- 	if(video_path != NULL)
-@@ -839,12 +881,54 @@ void set_photo_name(const char *name)
+ 
+-	return video_path;
+ }
+ 
+ /*
+@@ -839,10 +885,53 @@ void set_photo_name(const char *name)
   *
   * returns: photo file path
   */
++
 +const char* get_image_directory_name(const char* lang) {
 +    if (strstr(lang, "pt_") != NULL) {
 +        return "Imagens";
@@ -98,7 +92,7 @@ Index: guvcview/guvcview/gui.c
 +    } else if (strstr(lang, "ja_") != NULL) {
 +        return "画像";
 +    } else if (strstr(lang, "ko_") != NULL) {
-+        return "이미지"; 
++        return "이미지";
 +    } else {
 +        return "Images";
 +    }
@@ -131,27 +125,27 @@ Index: guvcview/guvcview/gui.c
 +        }
 +    }
  
--	return photo_path;
-+    return photo_path;
+ 	return photo_path;
  }
- 
- /*
 Index: guvcview/gview_render/render_sdl2.c
 ===================================================================
 --- guvcview.orig/gview_render/render_sdl2.c
 +++ guvcview/gview_render/render_sdl2.c
-@@ -42,6 +42,7 @@
- 
- #include <stdlib.h>
+@@ -43,6 +43,7 @@
  #include <string.h>
+ #include <sys/wait.h>
+ #include <unistd.h>
 +#include <sys/stat.h>
  
  #define BUFFER_SIZE 128
  
-@@ -172,50 +173,56 @@ void onPhotoButtonClick() {
+@@ -175,48 +176,52 @@ void onPhotoButtonClick() {
      SDL_Delay(300);
  }
  
+-void onGalleryButtonClick() {
+-     printf("Clicou no botão GALERIA!\n");
+-     const char *homeDir = getenv("HOME");
 +char *get_image_path() {
 +    static char image_path[256];
 +    const char *home = getenv("HOME");
@@ -159,33 +153,6 @@ Index: guvcview/gview_render/render_sdl2.c
 +        perror("Erro ao obter HOME");
 +        return NULL;
 +    }
-+
-+    const char *lang = getenv("LANG"); // Obtém o idioma do sistema
-+    if (lang == NULL) {
-+        lang = "C"; 
-+    }
-+
-+    if (strstr(lang, "pt_") != NULL) {
-+        snprintf(image_path, sizeof(image_path), "%s/Imagens", home);
-+    } else {
-+        snprintf(image_path, sizeof(image_path), "%s", home);
-+    }
-+
-+    struct stat st = {0};
-+    if (stat(image_path, &st) == -1) {
-+        if (mkdir(image_path, 0700) != 0) {
-+            perror("Erro ao criar diretório");
-+            return NULL;
-+        }
-+    }
-+
-+    return image_path; 
-+}
-+
- void onGalleryButtonClick() {
--     printf("Clicou no botão GALERIA!\n");
--     const char *homeDir = getenv("HOME");
-+     char *imagePath = get_image_path();
  
 -     if (homeDir == NULL){
 -         perror("Erro ao obter HOME");
@@ -200,13 +167,33 @@ Index: guvcview/gview_render/render_sdl2.c
 -	    config_save(arquivoConfig);
 -    	    arquivo = fopen(arquivoConfig, "r");
 -            perror("Arquivo foi criado\n");
-+     if(imagePath == NULL){
-+        perror("Erro ao obter o caminho das imagens");
-+	return;
-      }
+-     }
++    const char *lang = getenv("LANG"); // Obtém o idioma do sistema
++    if (lang == NULL) {
++        lang = "C";
++    }
  
 -     char linha[256];
--
++    if (strstr(lang, "pt_") != NULL) {
++        snprintf(image_path, sizeof(image_path), "%s/Imagens", home);
++    } else {
++        snprintf(image_path, sizeof(image_path), "%s", home);
++    }
++
++    struct stat st = {0};
++    if (stat(image_path, &st) == -1) {
++        if (mkdir(image_path, 0700) != 0) {
++            perror("Erro ao criar diretório");
++            return NULL;
++        }
++    }
++
++    return image_path;
++}
++
++void onGalleryButtonClick() {
++     char *imagePath = get_image_path();
+ 
 -     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
 -         if (sscanf(linha, "photo_path=%s", linha) == 1) {
 -             printf("Caminho da foto: %s\n", linha);
@@ -228,6 +215,11 @@ Index: guvcview/gview_render/render_sdl2.c
 -                 break;  // Se você quiser apenas a primeira ocorrência, pode sair do loop
 -             }
 -         }
++     if(imagePath == NULL){
++        perror("Erro ao obter o caminho das imagens");
++	return;
++      }
++
 +     pid_t pid = fork();
 +     if(pid == -1){
 +         perror("Erro ao criar processo");
@@ -238,16 +230,24 @@ Index: guvcview/gview_render/render_sdl2.c
 +	exit(EXIT_FAILURE);
       }
  
-+     
-+
       //// apenas a galeria é trocado
-      ImageInfo images[] = {
- 	{ "/usr/share/pixmaps/guvcview/video.svg", 50, 50, valorX, valoryVideo },
-@@ -228,7 +235,6 @@ void onGalleryButtonClick() {
+@@ -231,7 +236,6 @@ void onGalleryButtonClick() {
      SDL_Delay(150);
  
  
 -     fclose(arquivo);
   }
  
- static int video_init(int width, int height, int flags, int win_w, int win_h)
+ 
+Index: guvcview/guvcview/gui.h
+===================================================================
+--- guvcview.orig/guvcview/gui.h
++++ guvcview/guvcview/gui.h
+@@ -521,5 +521,7 @@ int gui_run();
+  * returns: none
+  */
+ void gui_close();
++const char* get_video_directory_name(const char* lang);
++const char* get_image_directory_name(const char* lang);
+ 
+ #endif

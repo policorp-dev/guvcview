@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
 		set_render_flag(render);
 	
 	if(my_options->disable_libv4l2)
-		v4l2core_disable_libv4l2(vd);
+		v4l2core_disable_libv4l2();
 
 	/*select capture method*/
 	if(strcasecmp(my_config->capture, "read") == 0)
@@ -273,6 +273,8 @@ int main(int argc, char *argv[])
 	/*set fx masks*/
 	set_render_fx_mask(my_config->video_fx);
 	set_audio_fx_mask(my_config->audio_fx);
+
+	set_fx_bin_treshold(my_config->fx_bin_treshold);
 
 	/*set OSD mask*/
 	/*make sure VU meter OSD is disabled since it's set by the audio capture*/

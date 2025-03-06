@@ -14,7 +14,7 @@ Index: guvcview/data/icons/Makefile.in
 ===================================================================
 --- guvcview.orig/data/icons/Makefile.in
 +++ guvcview/data/icons/Makefile.in
-@@ -357,7 +357,7 @@ top_builddir = @top_builddir@
+@@ -356,7 +356,7 @@ top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@
  iconsdir = ${datadir}/pixmaps/guvcview
  icons_DATA = \

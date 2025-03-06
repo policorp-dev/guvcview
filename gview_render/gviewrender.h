@@ -68,6 +68,7 @@ __BEGIN_DECLS
 #define REND_FX_YUV_POW2_DISTORT (1<<10)
 #define REND_FX_YUV_BLUR (1<<11)
 #define REND_FX_YUV_BLUR2 (1<<12)
+#define REND_FX_YUV_BINARY (1<<13)
 
 /*OSD FLAGS*/
 #define REND_OSD_NONE           (0)
@@ -140,9 +141,33 @@ void render_set_crosshair_color(uint32_t rgb_color);
  * asserts:
  *    none
  *
- * returns: osd rgb color
+ * returns: osd crosshair rgb color
  */
 uint32_t render_get_crosshair_color();
+
+/*
+ * set the osd crosshair size
+ * args:
+ *   size - 24
+ *
+ * asserts:
+ *    none
+ *
+ * returns: none
+ */
+void render_set_crosshair_size(int size);
+
+/*
+ * get the osd crosshair size
+ * args:
+ *   none
+ *
+ * asserts:
+ *    none
+ *
+ * returns: osd crosshair size
+ */
+int render_get_crosshair_size();
 
 /*
  * get render width
@@ -262,6 +287,19 @@ int render_call_event_callback(int id);
  * returns: void
  */
 void render_frame_fx(uint8_t *frame, uint32_t mask);
+
+
+/*
+ * set fx binary filter treshold
+ * args:
+ *    treshold - 0x0 to 0xff
+ *
+ * asserts:
+ *    none
+ *
+ * returns: void
+ */
+void set_fx_bin_treshold(uint8_t treshold);
 
 /*
  * Apply OSD mask

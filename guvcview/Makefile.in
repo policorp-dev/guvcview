@@ -109,7 +109,8 @@ bin_PROGRAMS = guvcview$(EXEEXT)
 @HAVE_GTK3_TRUE@am__append_3 = $(GUIGTK3_CFLAGS)
 @HAVE_GTK3_TRUE@am__append_4 = $(GUIGTK3_LIBS)
 @HAVE_QT5_TRUE@am__append_5 = $(GUIQT5_LIBS)
-@ENABLE_SFML_TRUE@@ENABLE_SHARED_FALSE@am__append_6 = -lGL
+#else
+@ENABLE_SFML_TRUE@am__append_6 = -lGL
 subdir = guvcview
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_pthread.m4 \
@@ -305,7 +306,6 @@ EGREP = @EGREP@
 ETAGS = @ETAGS@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
-FILECMD = @FILECMD@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GETTEXT_PACKAGE_V4L2CORE = @GETTEXT_PACKAGE_V4L2CORE@
 GMOFILES = @GMOFILES@
@@ -1209,7 +1209,9 @@ uninstall-am: uninstall-binPROGRAMS
 .PRECIOUS: Makefile
 
 
-@ENABLE_SFML_TRUE@@ENABLE_SHARED_TRUE@ #do nothing
+#if ENABLE_SHARED
+@ENABLE_SFML_TRUE@ #do nothing
+#endif
 
 moc_%.cpp: %.hpp
 	$(MOC) $< -o $@
