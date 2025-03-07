@@ -18,7 +18,7 @@ Index: guvcview/guvcview/guvcview.c
  	const rlim_t kStackSize = 128L * 1024L * 1024L;   /* min stack size = 128 Mb*/
      struct rlimit rl;
      int result;
-@@ -247,8 +249,17 @@ int main(int argc, char *argv[])
+@@ -247,8 +249,18 @@ int main(int argc, char *argv[])
  	if(!vd)
  	{
  		char message[55];
@@ -32,7 +32,8 @@ Index: guvcview/guvcview/guvcview.c
 +						GTK_BUTTONS_CLOSE,
 +						"%s",message);
 +
-+		gtk_window_set_title(GTK_WINDOW(dialog), "Error");
++		gtk_window_set_title(GTK_WINDOW(dialog), "Guvcview Error");
++		gtk_dialog_run(GTK_DIALOG(dialog));
 +		gtk_widget_destroy(dialog);
 +
  		options_clean();
