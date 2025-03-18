@@ -1,3 +1,9 @@
+guvcview (2.Policorp-2) stable; urgency=medium
+
+  * Changed log in changelog
+
+ -- Edson Juliano Drosdeck <edson@policorp.com.br>  Mon, 17 Mar 2025 12:54:26 +0000
+
 guvcview (2.1.0.Policorp-2) stable; urgency=medium
 
   * Add aviso ao não ter webcam
